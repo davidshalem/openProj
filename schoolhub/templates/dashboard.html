@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}לוח בקרה | SchoolHub{% endblock %}
+
+{% block content %}
+<!-- DEMO 1 – Change this requirement live: ברוכים הבאים לשיעור הנדסת תוכנה -->
+<section class="hero">
+    <div>
+        <span class="eyebrow">לוח בקרה בית ספרי</span>
+        <h1>ברוכים הבאים ל-SchoolHub</h1>
+        <p>כל מה שחשוב בבית הספר, במקום אחד ברור ופשוט.</p>
+    </div>
+    <div class="hero-mark" aria-hidden="true">✓</div>
+</section>
+
+<section aria-labelledby="statistics-title">
+    <div class="section-heading">
+        <div>
+            <h2 id="statistics-title">תמונת מצב</h2>
+            <p>הנתונים מחושבים ב-Python ונשלחים לתבנית Jinja.</p>
+        </div>
+        <span class="live-badge">● נתונים חיים</span>
+    </div>
+
+    <div class="cards-grid">
+        <article class="stat-card blue">
+            <span class="card-icon">👥</span>
+            <span class="stat-number">{{ students_count }}</span>
+            <span class="stat-label">תלמידים</span>
+        </article>
+        <article class="stat-card purple">
+            <span class="card-icon">🎓</span>
+            <span class="stat-number">{{ teachers_count }}</span>
+            <span class="stat-label">מורים</span>
+        </article>
+        <article class="stat-card green">
+            <span class="card-icon">🏫</span>
+            <span class="stat-number">{{ classes_count }}</span>
+            <span class="stat-label">כיתות</span>
+        </article>
+        <article class="stat-card orange">
+            <span class="card-icon">📋</span>
+            <span class="stat-number">{{ open_tasks_count }}</span>
+            <span class="stat-label">משימות פתוחות</span>
+        </article>
+        <article class="stat-card gold">
+            <span class="card-icon">⭐</span>
+            <span class="stat-number">{{ excellent_students_count }}</span>
+            <span class="stat-label">תלמידים בממוצע מעל 90</span>
+        </article>
+    </div>
+</section>
+
+<section class="panel tasks-panel">
+    <div class="section-heading compact">
+        <div>
+            <h2>משימות קרובות</h2>
+            <p>דוגמה נוספת לרשימה שמגיעה מהשרת.</p>
+        </div>
+    </div>
+    <ul class="task-list">
+        {% for task in open_tasks %}
+            <li><span class="task-check">✓</span>{{ task }}</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

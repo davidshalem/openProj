@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}ציונים | SchoolHub{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <span class="eyebrow">מעקב הישגים</span>
+        <h1>ציוני תלמידים</h1>
+        <p>בחרו תלמיד כדי לצפות בציונים ולעדכן אותם.</p>
+    </div>
+</section>
+
+{% if message %}
+    <div class="alert {{ message_type }}" role="alert">{{ message }}</div>
+{% endif %}
+
+<section class="panel student-picker">
+    <form method="GET" action="{{ url_for('grades_page') }}">
+        <label for="student_id">בחירת תלמיד</label>
+        <select id="student_id" name="student_id">
+            {% for student in students %}
+                <option value="{{ student.id }}" {% if student.id == selected_student.id %}selected{% endif %}>
+                    {{ student.name }} · {{ student.class_name }}
+                </option>
+            {% endfor %}
+        </select>
+        <button class="button secondary" type="submit">הצג ציונים</button>
+    </form>
+</section>
+
+<div class="grades-layout">
+    <section class="panel profile-card">
+        <div class="avatar">{{ selected_student.name[0] }}</div>
+        <h2>{{ selected_student.name }}</h2>
+        <p>כיתה {{ selected_student.class_name }}</p>
+        <div class="average-box">
+            <span>ממוצע</span>
+            <strong>{{ selected_student.average }}</strong>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="section-heading compact">
+            <div><h2>פירוט ציונים</h2><p>הציונים מגיעים מהמילון grades שב-data.py.</p></div>
+        </div>
+        {% if student_grades %}
+            <div class="grade-list">
+                {% for subject, grade in student_grades.items() %}
+                    <div class="grade-row"><span>{{ subject }}</span><strong>{{ grade }}</strong></div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-state">עדיין לא הוזנו ציונים לתלמיד זה.</p>
+        {% endif %}
+    </section>
+</div>
+
+<section class="panel form-panel">
+    <div>
+        <h2>עדכון ציון</h2>
+        <p>POST שולח את הבחירה מהדפדפן אל Flask, שמבצע ולידציה ומעדכן את הנתונים.</p>
+    </div>
+    {% if student_grades %}
+        <!-- DEMO 6 – Browser → POST → Flask → Python → updated HTML -->
+        <form class="inline-form" method="POST" action="{{ url_for('grades_page') }}">
+            <input type="hidden" name="student_id" value="{{ selected_student.id }}">
+            <label>מקצוע
+                <select name="subject" required>
+                    {% for subject in student_grades %}<option value="{{ subject }}">{{ subject }}</option>{% endfor %}
+                </select>
+            </label>
+            <label>ציון<input name="grade" type="number" min="0" max="100" required placeholder="0–100"></label>
+            <button class="button" type="submit">עדכן ציון</button>
+        </form>
+        <p class="form-note">נסו להסיר זמנית את min/max בכלי המפתחים ולשלוח 150 — השרת עדיין יחסום אותו.</p>
+    {% else %}
+        <p>כדי לעדכן ציון, בחרו תלמיד שכבר קיימים עבורו מקצועות.</p>
+    {% endif %}
+</section>
+{% endblock %}

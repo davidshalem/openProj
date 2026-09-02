@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SchoolHub{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="{{ url_for('dashboard') }}">
+                <span class="brand-icon">S</span>
+                <span>SchoolHub</span>
+            </a>
+            <nav aria-label="ניווט ראשי">
+                <a class="{{ 'active' if request.endpoint == 'dashboard' else '' }}" href="{{ url_for('dashboard') }}">לוח בקרה</a>
+                <a class="{{ 'active' if request.endpoint == 'students_page' else '' }}" href="{{ url_for('students_page') }}">תלמידים</a>
+                <a class="{{ 'active' if request.endpoint == 'grades_page' else '' }}" href="{{ url_for('grades_page') }}">ציונים</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container page-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">SchoolHub · פרויקט הדגמה להנדסת תוכנה</div>
+    </footer>
+</body>
+</html>
